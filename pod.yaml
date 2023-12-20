@@ -28,5 +28,5 @@ spec:
     spec:
       containers:
         - name: hello
-          image: aravindhan97/Netflix-FE:latest
+          image: aravindhan97/netflix:latest
           imagePullPolicy: Always
