@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('scm checkout') {
+            steps {
+                git 'https://github.com/Aravind0897/k8s.git'
+            }
+        }
+        stage('Docker build') {
+            steps {
+                sh 'sudo docker build -t netflix /var/lib/jenkins/workspace/sample'
+                sh 'sudo docker tag netflix aravindhan97/netflix:latest'
+                sh 'sudo docker tag netflix aravindhan97/netflix:${BUILD_NUMBER}'
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                sh 'sudo docker image push aravindhan97/netflix:latest'
+                sh 'sudo docker image push aravindhan97/netflix:${BUILD_NUMBER}'
+            }
+        }
+        stage('Deploy on kuberenetes') {
+            steps {
+                sh 'sudo kubectl apply -f /var/lib/jenkins/workspace/sample/pod.yaml'
+                sh 'sudo kubectl rollout restart deployment my-deployment'
+            }
+        }
+    }
+    post {
+        success {
+            // Send email notification on success
+            emailext (
+                subject: 'Pipeline Successful',
+                body: 'The pipeline has completed successfully. All the best macha',
+                to: 'aravindezhil97@gmail.com, aravind040897@gmail.com',
+            )
+        }
+
+        failure {
+            // Send email notification on failure
+            emailext (
+                subject: 'Pipeline Failed',
+                body: 'The pipeline has failed. Please check the Jenkins console for details.',
+                to: 'aravindezhil97@gmail.com, aravind040897@gmail.com',
+            )
+        }
+    }
+}
+
