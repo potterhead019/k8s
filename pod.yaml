@@ -1,20 +1,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: loadbalancer-svc
+  name: node-port
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: hello
   ports:
     - name: http
       protocol: TCP
       port: 80
+      nodePort: 32222
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loadbalancer-pod
+  name: my-deployment
 spec:
   replicas: 3
   selector:
@@ -27,5 +28,5 @@ spec:
     spec:
       containers:
         - name: hello
-          image: shankysai/newimage:latest
+          image: aravindhan97/Netflix-FE:latest
           imagePullPolicy: Always
