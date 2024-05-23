@@ -4,20 +4,20 @@ pipeline {
     stages {
         stage('scm checkout') {
             steps {
-                git 'https://github.com/Aravind0897/k8s.git'
+                git 'https://github.com/potterhead-10/k8s.git'
             }
         }
         stage('Docker build') {
             steps {
                 sh 'sudo docker build -t netflix /var/lib/jenkins/workspace/sample'
-                sh 'sudo docker tag netflix aravindhan97/netflix:latest'
-                sh 'sudo docker tag netflix aravindhan97/netflix:${BUILD_NUMBER}'
+                sh 'sudo docker tag netflix vishnupriya19/netflix:latest'
+                sh 'sudo docker tag netflix vishnupriya19/netflix:${BUILD_NUMBER}'
             }
         }
         stage('Docker Push') {
             steps {
-                sh 'sudo docker image push aravindhan97/netflix:latest'
-                sh 'sudo docker image push aravindhan97/netflix:${BUILD_NUMBER}'
+                sh 'sudo docker image push vishnupriya19/netflix:latest'
+                sh 'sudo docker image push vishnupriya19/netflix:${BUILD_NUMBER}'
             }
         }
         stage('Deploy on kuberenetes') {
@@ -32,8 +32,8 @@ pipeline {
             // Send email notification on success
             emailext (
                 subject: 'Pipeline Successful',
-                body: 'The pipeline has completed successfully. All the best macha',
-                to: 'aravindezhil97@gmail.com, aravind040897@gmail.com',
+                body: 'The pipeline has completed successfully. All the best',
+                to: 'vishnupriya19121997@gmail.com, sivavishnupriya19@gmail.com',
             )
         }
 
@@ -42,7 +42,7 @@ pipeline {
             emailext (
                 subject: 'Pipeline Failed',
                 body: 'The pipeline has failed. Please check the Jenkins console for details.',
-                to: 'aravindezhil97@gmail.com, aravind040897@gmail.com',
+                to: 'vishnupriya19121997@gmail.com, sivavishnupriya19@gmail.com',
             )
         }
     }
