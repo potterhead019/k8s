@@ -1,6 +1,5 @@
 pipeline {
     agent any
-#ff
     stages {
         stage('scm checkout') {
             steps {
